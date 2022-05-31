@@ -86,4 +86,4 @@ db.run("DELETE FROM videos WHERE id=?",id,function(err,rows){
 
 
 
-module.exports = {processLogin, getVideosFromCategory, addVideo_Admin, modifyVideo_Admin, deleteVideo_Admin, getVidsCategories}
+module.exports = { getVideosFromCategory, addVideo_Admin, modifyVideo_Admin, deleteVideo_Admin, getVidsCategories}
