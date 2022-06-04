@@ -1,33 +1,55 @@
 'use strict';
 
-// cargar el módulo para bases de datos SQLite
-var sqlite3 = require('sqlite3').verbose();
+// const metodos = require('./funciones')
+    // cargar el módulo para bases de datos SQLite
+    var sqlite3 = require('sqlite3').verbose();
 
-// Abrir nuestra base de datos
-var db = new sqlite3.Database(
-    'BBDD.db', // nombre del fichero de base de datos
-    function (err) { // funcion que será invocada con el resultado
-        if (err) // Si ha ocurrido un error
-            console.log(err); // Mostrarlo por la consola del servidor
-    }
-);
-
-const express = require('express');
-const server = express();
-const port = 8080;
-const jwt = require('jsonwebtoken');
-// Necesario para leer del archivo .env
-require('dotenv').config();
-
-// Obtener la referencia al módulo 'body-parser'
-const bodyParser = require('body-parser');
-// Configuring express to use body-parser as middle-ware.
-server.use(bodyParser.urlencoded({ extended: false }));
-server.use(bodyParser.json());
+    // Abrir nuestra base de datos
+    var db = new sqlite3.Database(
+        'BBDD.db', // nombre del fichero de base de datos
+        function(err) { // funcion que será invocada con el resultado
+            if (err) // Si ha ocurrido un error
+                console.log(err); // Mostrarlo por la consola del servidor
+            }
+        );
 
 
-// Obtener el configurador de rutas
-const router = express.Router();
+
+    const express = require('express');
+    const server = express();
+    const port = 8080;
+
+    // Cargamos el modulo
+    const session = require('express-session');
+    // Creamos el objeto con la configuración
+    var sess = {
+        secret: 'keyboard cat',
+        cookie: {}
+      };
+    // Se le dice al servidor que use el modulo de sesiones con esa configuracion
+    server.use(session(sess));
+
+    const jwt = require('jsonwebtoken');
+    // Necesario para leer del archivo .env
+    require('dotenv').config();
+
+    // Obtener la referencia al módulo 'body-parser'
+    const bodyParser = require('body-parser');
+const { header } = require('express/lib/request');
+    // Configuring express to use body-parser as middle-ware.
+    server.use(bodyParser.urlencoded({ extended: false }));
+    server.use(bodyParser.json());
+
+
+    // Obtener el configurador de rutas
+    const router = express.Router();
+
+
+/*
+------------------------------------------------------------------
+                SECCIÓN DE LOGIN
+------------------------------------------------------------------
+*/
 
 // Configurar la accion asociada al login
 router.post('/login', function (req, res) {
@@ -77,18 +99,24 @@ function verifyToken(token) {
     let TokenArray = token.split(" ");
 
     // Verificamos la firma y guardamos los datos en decoded
-    const decoded = jwt.verify(TokenArray[1], process.env.SECRET_KEY);
+    let decoded = jwt.verify(TokenArray[1], process.env.SECRET_KEY);
 
     // Devuelve false si hay un error al verificar la firma
     // Devulve el rol si se verifica la firma del token
     if (decoded == undefined) {
         return false;
     } else if (decoded) {
-        const role = decoded.role;
+        let role = decoded.role;
         return role;
     }
 }
 
+// Petición para cerrar sesión
+// router.put('/logout', function (req, res) {
+//     sessionStorage.removeItem('admin_Token');
+//     res.redirect('/');
+
+// });
 /*
 ------------------------------------------------------------------
                 CRUD USUARIOS
@@ -192,19 +220,209 @@ router.delete('/usuarios/:id', function (req, res) {
 
 
 
-// Añadir las rutas al servidor
-server.use('/', router);
+/*
+------------------------------------------------------------------
+                CRUD CATEGORÍAS
+------------------------------------------------------------------
+*/
 
 
-// Añadir las rutas estáticas al servidor.
-server.use(express.static('.'));
+        router.get('/categories',function (req, res) {
+            if(verifyToken(req.headers.authorization) == 'ADMIN' || verifyToken(req.headers.authorization) == 'USER'){
+
+            db.all('SELECT * FROM categories', function(err, content) 
+            {
+                if(content.length == 0){
+                    res.json({ errormsg: 'No hay categorías actualmente en la base de datos.'});
+                }else{
+                    res.json(content);
+                }
+            }
+            );
+        }else  res.json({errormsg: 'No tiene suficientes permisos'});
+        });
 
 
-//SQL 
+        router.post('/categories',function (req, res) {
+            if(verifyToken(req.headers.authorization) == 'ADMIN'){
+            let name = req.body.name;
+            console.log(name);
+                db.run('INSERT INTO categories (name) VALUES (?)', name, function(err, content) 
+                {
+                    if(err){
+                        res.json({ errormsg: 'La categoría ya existe en la base de datos.'});
+                    }else{
+                        let mensaje = 'La categoría ['+ name + '] ha sido añadida correctamente.';
+                        res.json({ res: mensaje});
+                    }
+                });
+            }else  res.json({errormsg: 'No tiene suficientes permisos'});
+        });
+
+        router.put('/categories',function (req, res) {
+            if(verifyToken(req.headers.authorization) == 'ADMIN'){
+            let id = req.body.id;
+            let name = req.body.name;
+            db.get('SELECT * FROM categories WHERE id=?',id, function(err, row) 
+            {
+                if(row == undefined){
+                    res.json({ errormsg: 'La categoría seleccionada no existe en la base de datos.'});
+                }
+                else{
+                    db.run("UPDATE categories SET name=? WHERE id=?",[name,id],function(err,rows){
+                        if(err){
+                            res.json({ errormsg: 'Ya existe una categoría con el nombre introducido.'});
+                        }else{
+                            let mensaje = 'La categoría se ha renombrado a [' + name + '].';
+                            res.json({ res: mensaje});
+                        }
+                    }
+                    );
+                }
+                });
+            }else  res.json({errormsg: 'No tiene suficientes permisos'});
+            });
+
+
+    
+        router.delete('/categories/:id',function (req, res) {
+            if(verifyToken(req.headers.authorization) == 'ADMIN'){
+            let id = req.params.id;
+
+            db.get('SELECT * FROM categories WHERE id=?',id, function(err, row) 
+            {
+                if(row == undefined){
+                    res.json({ errormsg: 'La categoría seleccionada no existe.'});
+                }else{
+                    db.run("DELETE FROM categories WHERE id=?",id,function(err,rows){
+                        let mensaje = 'La categoría con identificador ' + id + ' ha sido eliminada correctamente.';
+                        res.json({ res: mensaje});
+                    });
+                }
+            });
+        }else  res.json({errormsg: 'No tiene suficientes permisos'});
+        });
 
 
 
 
-server.listen(port, () => {
-    console.log('Servidor corriendo en el puerto:' + port);
-});
+
+/*
+------------------------------------------------------------------
+                CRUD VIDEOS
+------------------------------------------------------------------
+*/
+
+        router.get('/videos',function (req, res) {
+            if(verifyToken(req.headers.authorization) == 'ADMIN'){
+            db.all('SELECT * FROM videos', function(err, content) 
+            {
+                if(content.length == 0){
+                    res.json({ errormsg: 'No hay videos actualmente en la base de datos.'});
+                }else{
+                    res.json(content);
+                }
+            });
+        }else  res.json({errormsg: 'No tiene suficientes permisos'});
+        });
+
+
+
+        router.get('/videos/:category_id',function (req, res) {
+            if(verifyToken(req.headers.authorization) == 'ADMIN' || verifyToken(req.headers.authorization) == 'USER'){
+            let category_id = req.params.category_id;
+            db.all('SELECT * FROM videos WHERE id_category=?', category_id, function(err, content) 
+            {
+                if(content.length == 0){
+                    res.json({ errormsg: 'No hay videos actualmente para la categoría seleccionada.'});
+                }else{
+                    res.json(content);
+                }
+            });
+        }else  res.json({errormsg: 'No tiene suficientes permisos'});
+        });
+
+
+        router.post('/videos',function (req, res) {
+            if(verifyToken(req.headers.authorization) == 'ADMIN'){
+            let id_category = req.body.id_category;
+            let name = req.body.name;
+            let url = req.body.url;
+            db.run('INSERT INTO videos (id_category,name,url) VALUES (?,?,?)', [id_category,name,url], function(err, content) 
+            {
+                if(err){
+                    res.json({ errormsg: 'El video ya existe en la base de datos.'});
+                }else{
+                    let mensaje = 'El video ['+ name + '] ha sido añadido correctamente.';
+                    res.json({ res: mensaje});
+                }
+            });   
+        }else  res.json({errormsg: 'No tiene suficientes permisos'});
+        });
+
+
+        router.put('/videos',function (req, res) {
+            if(verifyToken(req.headers.authorization) == 'ADMIN'){
+            let id = req.body.id;
+            let id_category = req.body.id_category;
+            let name = req.body.name;
+            let url = req.body.url;
+            let inputData = [id_category,name,url, id];
+
+            db.get('SELECT * FROM videos WHERE id=?',id, function(err, row) 
+            {
+                if(row == undefined){
+                    res.json({ errormsg: 'El video seleccionado no existe en la base de datos.'});
+                } else{
+                    db.run("UPDATE videos SET id_category=?, name=?, url=? WHERE id=?",inputData,function(err,rows){
+                        console.log(err);
+                        console.log(rows);
+                        if(err){
+                            res.json({ errormsg: 'El video ya existe para la categoría introducida.'});
+                        }else{
+                            let mensaje = 'El video con identificador '+ id + ' ha sido modificado correctamente.';
+                            res.json({ res: mensaje});
+                        }
+                    });
+                }
+            });
+        }else  res.json({errormsg: 'No tiene suficientes permisos'});
+        });
+
+
+
+        router.delete('/videos/:id',function (req, res) {
+            if(verifyToken(req.headers.authorization) == 'ADMIN'){
+            let id = req.params.id;
+            db.get('SELECT * FROM videos WHERE id=?',id, function(err, row) 
+            {
+                if(row == undefined){
+                    res.json({ errormsg: 'El video seleccionado no existe.'});
+                }else{
+                    db.run("DELETE FROM videos WHERE id=?",id,function(err,rows){
+                        let mensaje = 'El video con identificador ' + id + ' ha sido eliminado correctamente.';
+                        res.json({ res: mensaje});
+                    });
+                }
+            });
+        }else  res.json({errormsg: 'No tiene suficientes permisos'});
+        });
+
+
+
+    // Añadir las rutas al servidor
+    server.use('/', router);
+
+
+    // Añadir las rutas estáticas al servidor.
+    server.use(express.static('.'));
+
+
+    //SQL 
+
+
+
+
+    server.listen(port, () => {
+    console.log('Servidor corriendo en el puerto:'+ port);
+    });
