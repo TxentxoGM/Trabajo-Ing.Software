@@ -386,4 +386,3 @@ router.delete('/usuarios/:id', function (req, res) {
 
     server.listen(port, () => {
     console.log('Servidor corriendo en el puerto:'+ port);
-    });
