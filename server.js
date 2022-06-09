@@ -99,12 +99,6 @@ function verifyToken(token) {
     }
 }
 
-// Petición para cerrar sesión
-// router.put('/logout', function (req, res) {
-//     sessionStorage.removeItem('admin_Token');
-//     res.redirect('/');
-
-// });
 /*
 ------------------------------------------------------------------
                 CRUD USUARIOS
