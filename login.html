@@ -1,0 +1,13 @@
+<!-- Código para el login del usuario -->
+<div id="loginBlock">
+    <p>Para acceder a esta web tienes que iniciar sesión</p>
+    <form>
+        <label for="loginMail">Email:</label>
+        <input type="text" id="loginMail" placeholder="Mail" ng-model="email"><br>
+
+        <label for="loginPswd">Contraseña:</label>
+        <input type="password" id="loginPswd" placeholder="Contraseña" ng-model="password"><br>
+
+        <button type="button" ng-click="authenticate()">Iniciar Sesión</button>
+    </form>
+</div>
