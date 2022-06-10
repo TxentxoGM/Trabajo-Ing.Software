@@ -1,0 +1,78 @@
+
+<div id="getUserInfo" ng-show="adminOption === 1">
+    <button type="button" ng-click="jumpToCRUD(1,1)" >Crear Usuario</button>
+    <table id="tableUserInfo">
+        <thead>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Rol</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
+        </thead>
+        <tbody id="tableUserInfoBody">
+            <tr ng-repeat="user in users">
+                <td>{{user.id}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.password}}</td>
+                <td>{{user.role}}</td>
+                <td ng-click="jumpToCRUD(1,2)">Modificar usuario</td>
+                <td ng-click="jumpToCRUD(1,3)">Eliminar usuario</td> 
+            </tr>
+            <!-- Se rellena con JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+
+<div id="getCategoryInfo" ng-show="adminOption === 2">
+    <button type="button" ng-click="jumpToCRUD(2,1)">Crear Categoría</button>
+    <table id="tableCategoryInfo">
+        <thead>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
+        </thead>
+        <tbody id="tableCategoryInfoBody">
+            <!-- Se rellena con JavaScript -->
+            <tr ng-repeat="cat in categories">
+                <td>{{cat.id}}</td>
+                <td>{{cat.name}}</td>
+                <td ng-click="jumpToCRUD(2,2)">Modificar categoría</td>
+                <td ng-click="jumpToCRUD(2,3)">Eliminar categoría</td> 
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<div id="getVideoInfo" ng-show="adminOption === 3">
+    <button type="button" ng-click="jumpToCRUD(3,1)">Añadir Video</button>
+    <table id="tableVideoInfo" class="table-hover">
+        <thead>
+            <th>Portada</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>URL</th>
+            <th>Id</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
+        </thead>
+        <tbody id="tableVideoInfoBody">
+            <!-- Se rellena con JavaScript -->
+            <tr ng-repeat="vid in videos">
+                <td>Tu no mete cabra</td>
+                <td>{{vid.name}}</td>
+                <td>{{vid.id_category}}</td>
+                <td>{{vid.url}}</td>
+                <td>{{vid.id}}</td>
+                <td ng-click="jumpToCRUD(3,2)">Modificar video</td>
+                <td ng-click="jumpToCRUD(3,3)">Borrar video</td> 
+            </tr>
+        </tbody>
+    </table>
+</div>

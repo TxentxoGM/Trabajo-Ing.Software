@@ -1,0 +1,63 @@
+<div id="getCategoryInfo" ng-show="tipoOperacion === 0">
+    <button type="button" ng-click="jumpToCreateCategory()">Crear Categoría</button>
+    <table id="tableCategoryInfo">
+        <thead>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
+        </thead>
+        <tbody id="tableCategoryInfoBody">
+            <!-- Se rellena con JavaScript -->
+            <tr ng-repeat="cat in categories">
+                <td>{{cat.id}}</td>
+                <td>{{cat.name}}</td>
+                <td ng-click="jumpToModifyCategory(cat.id, cat.name)"><a class="hoverable">Modificar categoría</a></td>
+                <td ng-click="jumpToDeleteCategory(cat.id, cat.name)"><a class="hoverable">Eliminar categoría</a></td> 
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="createCategoryMenu" ng-show="tipoOperacion === 1">
+    <form>
+        <label for="createCategoryMenu_Nombre">Nombre:</label>
+        <input type="text" name="createCategoryMenu_Nombre" id="createCategoryMenu_Nombre"
+            placeholder="Nombre" ng-model="nombreCategoria"><br>
+
+        <div class="button1">
+            <button type="button"
+                ng-click="createCategory(nombreCategoria)">Crear</button>
+            <button type="button" ng-click="comeBack()">Volver Atrás</button>
+        </div>
+    </form>
+    <p>{{error}}</p>
+</div>
+
+<div id="updateCategoryMenu" ng-show="tipoOperacion === 2">
+    <form>
+        <label for="updateCategoryMenu_Nombre">Nombre:</label>
+        <input type="text" name="updateCategoryMenu_Nombre" id="updateCategoryMenu_Nombre"
+            placeholder="Nombre" ng-model="nombreCategoria"><br>
+
+        <div class="button1">
+            <button type="button"
+                ng-click="modifyCategory(idCategoria, nombreCategoria)">Modificar</button>
+            <button type="button" ng-click="comeBack()">Volver Atrás</button>
+        </div>
+    </form>
+    <p>{{error}}</p>
+</div>
+
+<div id="deleteCategoryMenu" ng-show="tipoOperacion === 3">
+    <form>
+        <p>¿Seguro que quieres eliminar la categoría de nombre <span class="borrarElemento">{{nombreCategoria}}</span> e identificador <span class="borrarElemento">{{idCategoria}}</span>? <br>
+
+        <div class="button1">
+            <button type="button"
+                ng-click="deleteCategory(idCategoria)">Eliminar</button>
+            <button type="button" ng-click="comeBack()">Volver Atrás</button>
+        </div>
+    </form>
+    <p>{{error}}</p>
+</div>

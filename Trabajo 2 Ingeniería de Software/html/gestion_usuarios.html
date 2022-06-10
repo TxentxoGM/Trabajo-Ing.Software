@@ -1,0 +1,78 @@
+<div id="getUserInfo" ng-show="tipoOperacion === 0">
+    <button type="button" ng-click="jumpToCreateUser()" >Crear Usuario</button>
+    <table id="tableUserInfo">
+        <thead>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Rol</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
+        </thead>
+        <tbody id="tableUserInfoBody">
+            <tr ng-repeat="user in users">
+                <td>{{user.id}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.password}}</td>
+                <td>{{user.role}}</td>
+                <td ng-click="jumpToModifyUser(user.id, user.name, user.password)"><a class="hoverable">Modificar usuario</a></td>
+                <td ng-click="jumpToDeleteUser(user.id, user.name)"><a class="hoverable">Eliminar usuario</a></td> 
+            </tr>
+            <!-- Se rellena con JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+<div id="createUserMenu" ng-show="tipoOperacion === 1">
+    <form>
+        <label for="createUserName">Nombre:</label>
+        <input type="text" name="createUserName" id="createUserName" placeholder="Nombre" ng-model="nombreUsuario"><br>
+
+        <label for="createUserMail">Mail:</label>
+        <input type="text" name="createUserMail" id="createUserMail" placeholder="Mail" ng-model="mailUsuario"><br>
+
+        <label for="createUserPswd">Contraseña:</label>
+        <input type="password" name="createUserPswd" id="createUserPswd" placeholder="Contraseña" ng-model="passwordUsuario"><br>
+
+        <div class="button1">
+            <button type="button"
+                ng-click="createUser(nombreUsuario, mailUsuario, passwordUsuario)">Crear
+                Usuario</button>
+            <button type="button" ng-click="comeBack()">Volver Atrás</button>
+        </div>
+    </form>
+    <p>{{error}}</p>
+</div>
+
+<div id="updateUserMenu" ng-show="tipoOperacion === 2">
+    <form>
+        <label for="updateUserName">Nombre:</label>
+        <input type="text" name="updateUserName" id="updateUserName" placeholder="Nombre" ng-value="nombreUsuario" ng-model="nombreUsuario"><br>
+
+        <label for="updateUserPswd">Contraseña:</label>
+        <input type="text" name="updateUserPswd" id="updateUserPswd" placeholder="Password" ng-value="passwordUsuario" ng-model="passwordUsuario"><br>
+
+        <div class="button1">
+            <button type="button"
+                ng-click="modifyUser(idUsuario)">Actualizar
+                Usuario</button>
+            <button type="button" ng-click="comeBack()">Volver Atrás</button>
+        </div>
+    </form>
+    <p>{{error}}</p>
+</div>
+
+<div id="deleteUserMenu" ng-show="tipoOperacion === 3">
+    <form>
+        <p>¿Seguro que quieres eliminar la categoría de nombre <span class="borrarElemento">{{nombreUsuario}}</span> e identificador <span class="borrarElemento">{{idUsuario}}</span>? <br>
+
+        <div class="button1">
+            <button type="button" ng-click="deleteUser(idUsuario)">Eliminar
+                Usuario</button>
+            <button type="button" ng-click="comeBack()">Volver Atrás</button>
+        </div>
+    </form>
+    <p>{{error}}</p>
+</div>
