@@ -1,16 +1,12 @@
 <div id="userOption" ng-show="userOption === 1">
     <p>¿Qué música quieres escuchar hoy?</p><br>
     <div id="Lista_categorias_usuario" ng-repeat="cat in userCategories">
-        
-        <button ng-click="getVideosForUser(cat.id,cat.name)">{{cat.name}}</button>
+        <button ng-click="getVideosForUser(cat.id,cat.name)" class="botonCategoria">{{cat.name}}</button>
     </div>
-    <!-- Introducimos las distintas categorías con JS -->
-
 </div>
 
 <div id="userVideos" ng-show="userOption === 2">
     <button type="button" ng-click="comeBack()" id="userGoBack">Volver Atrás</button>
-    <!-- Introducimos los videos con JS -->
     <table id="normalUserTable">
         <thead>
             <th>Portada</th>

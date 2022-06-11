@@ -250,11 +250,15 @@ select {
    box-shadow: none;
 }
 
-.toggle {
+a.toggle  {
    color: #42f3af;
 }
 
 
 .borrarElemento {
    color: rgb(255, 64, 0);
+}
+
+.botonCategoria{
+   width: 20vw;
 }

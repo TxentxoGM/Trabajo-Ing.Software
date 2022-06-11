@@ -20,7 +20,6 @@
                 <td ng-click="jumpToModifyUser(user.id, user.name, user.password)"><a class="hoverable">Modificar usuario</a></td>
                 <td ng-click="jumpToDeleteUser(user.id, user.name)"><a class="hoverable">Eliminar usuario</a></td> 
             </tr>
-            <!-- Se rellena con JavaScript -->
         </tbody>
     </table>
 </div>
@@ -35,7 +34,7 @@
 
         <label for="createUserPswd">Contraseña:</label>
         <input type="password" name="createUserPswd" id="createUserPswd" placeholder="Contraseña" ng-model="passwordUsuario"><br>
-
+        
         <div class="button1">
             <button type="button"
                 ng-click="createUser(nombreUsuario, mailUsuario, passwordUsuario)">Crear
@@ -67,7 +66,6 @@
 <div id="deleteUserMenu" ng-show="tipoOperacion === 3">
     <form>
         <p>¿Seguro que quieres eliminar la categoría de nombre <span class="borrarElemento">{{nombreUsuario}}</span> e identificador <span class="borrarElemento">{{idUsuario}}</span>? <br>
-
         <div class="button1">
             <button type="button" ng-click="deleteUser(idUsuario)">Eliminar
                 Usuario</button>

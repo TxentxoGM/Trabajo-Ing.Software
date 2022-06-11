@@ -13,8 +13,6 @@
             }
         );
 
-
-
     const express = require('express');
     const server = express();
     const port = 8080;
@@ -140,7 +138,7 @@ router.get('/usuarios', function (req, res) {
     }
 });
 
-
+// Petición para obtener un usuario en particular, indicado por el id
 router.get('/usuarios/:id', function(req, res){
 
     if(verifyToken(req.headers.authorization) == 'ADMIN'){
@@ -152,7 +150,7 @@ router.get('/usuarios/:id', function(req, res){
     
 });
 
-
+// Petición para crear un usuario en la base de datos a partir de los parámentros introducidos
 router.post('/usuarios', function(req, res){
 
     if(verifyToken(req.headers.authorization) == 'ADMIN'){
@@ -169,7 +167,7 @@ router.post('/usuarios', function(req, res){
     }else  res.json({errormsg: 'No tiene suficientes permisos'});
 });
 
-
+// Petición para modificar un usuario con el id indicado con los valores introducidos
 router.put('/usuarios/:id', function(req, res){
     if(verifyToken(req.headers.authorization) == 'ADMIN'){
         console.log(req.params.id)
@@ -186,7 +184,7 @@ router.put('/usuarios/:id', function(req, res){
     }else  res.json({errormsg: 'No tiene suficientes permisos'});
 });
 
-
+// Petición para eliminar un usuario con el id indicado
 router.delete('/usuarios/:id', function (req, res) {
 
     if(verifyToken(req.headers.authorization) == 'ADMIN'){
@@ -214,7 +212,7 @@ router.delete('/usuarios/:id', function (req, res) {
 ------------------------------------------------------------------
 */
 
-
+        // Petición para obtener las categorias de la base de datos
         router.get('/categories',function (req, res) {
             if(verifyToken(req.headers.authorization) == 'ADMIN' || verifyToken(req.headers.authorization) == 'USER'){
                 
@@ -231,7 +229,7 @@ router.delete('/usuarios/:id', function (req, res) {
         }else  res.json({errormsg: 'No tiene suficientes permisos'});
         });
 
-
+        // Petición para crear una nueva categoría en la base de datos
         router.post('/categories',function (req, res) {
             if(verifyToken(req.headers.authorization) == 'ADMIN'){
                 if (!req.body.name) res.json({errormsg: 'No ha introducido todos los datos'});
@@ -244,6 +242,7 @@ router.delete('/usuarios/:id', function (req, res) {
             }else  res.json({errormsg: 'No tiene suficientes permisos'});
         });
 
+        // Petición para modificar la categoría indicada por el id con los parámentros introducidos
         router.put('/categories/:id',function (req, res) {
             if(verifyToken(req.headers.authorization) == 'ADMIN'){
 
@@ -265,7 +264,7 @@ router.delete('/usuarios/:id', function (req, res) {
             });
 
 
-    
+        // Petición para eliminar la categoría indicada por el id
         router.delete('/categories/:id',function (req, res) {
             if(verifyToken(req.headers.authorization) == 'ADMIN'){
             let id = req.params.id;
@@ -290,7 +289,7 @@ router.delete('/usuarios/:id', function (req, res) {
                 CRUD VIDEOS
 ------------------------------------------------------------------
 */
-
+        // Petición para obtener los videos de la base de datos
         router.get('/videos',function (req, res) {
             if(verifyToken(req.headers.authorization) == 'ADMIN'){
 
@@ -309,7 +308,7 @@ router.delete('/usuarios/:id', function (req, res) {
         });
 
 
-
+        // Petición para obtener todos los videos de la categoría indicada por el id
         router.get('/videos/:category_id',function (req, res) {
             if(verifyToken(req.headers.authorization) == 'ADMIN' || verifyToken(req.headers.authorization) == 'USER'){
 
@@ -323,6 +322,7 @@ router.delete('/usuarios/:id', function (req, res) {
         });
 
 
+        // Petición para crear un video con los parámentros introducidos
         router.post('/videos',function (req, res) {
             if(verifyToken(req.headers.authorization) == 'ADMIN'){
 
@@ -337,6 +337,7 @@ router.delete('/usuarios/:id', function (req, res) {
         });
 
 
+        // Petición para modificar el video indicado por el id con los parámentros introducidos
         router.put('/videos/:id',function (req, res) {
             if(verifyToken(req.headers.authorization) == 'ADMIN'){
                 
@@ -353,7 +354,7 @@ router.delete('/usuarios/:id', function (req, res) {
         });
 
 
-
+        // Petición para elimnar el video indicado por el id
         router.delete('/videos/:id',function (req, res) {
             if(verifyToken(req.headers.authorization) == 'ADMIN'){
 
