@@ -7,18 +7,19 @@
 
 <div id="userVideos" ng-show="userOption === 2">
     <button type="button" ng-click="comeBack()" id="userGoBack">Volver Atrás</button>
+    <div id="panelCategoriaVideos">{{userVideos[0].id_category}}</div>
     <table id="normalUserTable">
         <thead>
             <th>Portada</th>
             <th ng-click="ordenar('name')">Nombre</th>
-            <th>Categoría</th>
+            
             <th>URL</th>
         </thead>
         <tbody id="normalUserTableBody">
             <tr ng-repeat="vid in userVideos | orderBy:orden:condicion">
                 <td><a href="{{vid.url}}" target="_blank"><img ng-src="{{thumbnail(vid.url)}}"></a></td>
                 <td><a href={{vid.url}} target="_blank" class="youtubeVideo">{{vid.name}}</a></td>
-                <td>{{vid.id_category}}</td>
+                
                 <td><a href={{vid.url}} target="_blank" class="youtubeVideo">{{vid.url}}</a></td>
                 <td></td>
             </tr>
