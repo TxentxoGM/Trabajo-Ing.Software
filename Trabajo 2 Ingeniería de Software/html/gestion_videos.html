@@ -3,15 +3,15 @@
     <table id="tableVideoInfo" class="table-hover">
         <thead>
             <th>Portada</th>
-            <th>Nombre</th>
-            <th>Categoría</th>
+            <th ng-click="ordenar('name')">Nombre</th>
+            <th ng-click="ordenar('name_category')">Categoría</th>
             <th>URL</th>
-            <th>Id</th>
+            <th ng-click="ordenar('id')">Id</th>
             <th>Modificar</th>
             <th>Eliminar</th>
         </thead>
         <tbody id="tableVideoInfoBody">
-            <tr ng-repeat="vid in videos">
+            <tr ng-repeat="vid in videos | orderBy:orden:condicion">
                 <td><a href="{{vid.url}}" target="_blank"><img ng-src="{{thumbnail(vid.url)}}"></a></td>
                 <td><a href={{vid.url}} target="_blank" class="youtubeVideo">{{vid.name}}</a></td>
                 <td>{{vid.name_category}}</td>
