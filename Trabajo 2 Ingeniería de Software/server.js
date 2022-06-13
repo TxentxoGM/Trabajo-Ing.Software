@@ -291,7 +291,7 @@ router.delete('/usuarios/:id', function (req, res) {
 */
         // Petición para obtener los videos de la base de datos
         router.get('/videos',function (req, res) {
-            if(verifyToken(req.headers.authorization) == 'ADMIN'){
+            if(verifyToken(req.headers.authorization) == 'ADMIN' || verifyToken(req.headers.authorization) == 'USER'){
 
                 if(!req.query.desde || !req.query.limite){
                     req.query.desde = 0;

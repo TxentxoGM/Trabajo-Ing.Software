@@ -137,6 +137,9 @@ angular.module('trabajo', ['ngRoute'])
         };
 
 
+
+
+
         // Al cargar la vista, se muestran las primeras 99 categorias de la base de datos
         $scope.$on('$routeChangeSuccess', function () {
             $http.get("/categories", {
@@ -149,15 +152,41 @@ angular.module('trabajo', ['ngRoute'])
                 }
             }
             )
-                .success(function (data) {
-                    if (Object.keys(data).includes('errormsg') === true) {
+                .success(function (data1) {
+                    if (Object.keys(data1).includes('errormsg') === true) {
                         console.log('Se ha producido un error');
 
                     } else {
+                        $http.get("/videos", {
+                            'params': {
+                                "desde": 0,
+                                "limite": 999
+                            },
+                            headers: {
+                                'Authorization': "Bearer " + sessionStorage.token
+                            }
+                        })
+                        .success(function (data2) {
 
-                        $scope.userCategories = data.categorias;
-                        $scope.userOption = 1;
-                        $location.url('#/user/');
+                            if (Object.keys(data2).includes('errormsg') === true) {
+                                console.log('Se ha producido un error');
+                            } else {
+                                $scope.error = "";
+                                let listaCategorias = data1.categorias;
+                                let listaVideos = data2.videos;
+                                let listaProvisional = new Array();
+
+                                listaCategorias.forEach(categoria => {
+                                    let isEmpty = listaVideos.findIndex((element) => element.id_category == categoria.id);
+                                    if(isEmpty >= 0){
+                                        listaProvisional.push(categoria);
+                                    }
+                                });
+                                $scope.userCategories = listaProvisional;
+                                $scope.userOption = 1;
+                                $location.url('#/user/');
+                            }
+                        });
                     }
                 });
         });
@@ -553,7 +582,6 @@ angular.module('trabajo', ['ngRoute'])
                                 } else {
                                     $scope.error = "";
                                     let lista_provisional = data2.videos;
-                                    console.log(lista_provisional)
 
                                     // Como la categoría asociada al video va por id, se sustituye este por el nombre de categoría correspondiente
                                     lista_provisional.forEach(video => {
@@ -564,7 +592,6 @@ angular.module('trabajo', ['ngRoute'])
                                         });
                                     });
                                     $scope.videos = lista_provisional;
-                                    console.log($scope.videos)
                                     $scope.tipoOperacion = 0;
                                 }
                             });
