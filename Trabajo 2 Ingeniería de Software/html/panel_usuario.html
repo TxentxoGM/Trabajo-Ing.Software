@@ -10,12 +10,12 @@
     <table id="normalUserTable">
         <thead>
             <th>Portada</th>
-            <th>Nombre</th>
+            <th ng-click="ordenar('name')">Nombre</th>
             <th>Categoría</th>
             <th>URL</th>
         </thead>
         <tbody id="normalUserTableBody">
-            <tr ng-repeat="vid in userVideos">
+            <tr ng-repeat="vid in userVideos | orderBy:orden:condicion">
                 <td><a href="{{vid.url}}" target="_blank"><img ng-src="{{thumbnail(vid.url)}}"></a></td>
                 <td><a href={{vid.url}} target="_blank" class="youtubeVideo">{{vid.name}}</a></td>
                 <td>{{vid.id_category}}</td>

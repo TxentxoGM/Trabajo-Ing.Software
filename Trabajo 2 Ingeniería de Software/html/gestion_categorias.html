@@ -2,13 +2,13 @@
     <button type="button" ng-click="jumpToCreateCategory()">Crear Categoría</button>
     <table id="tableCategoryInfo">
         <thead>
-            <th>Id</th>
-            <th>Nombre</th>
+            <th ng-click="ordenar('id')">Id</th>
+            <th ng-click="ordenar('name')">Nombre</th>
             <th>Modificar</th>
             <th>Eliminar</th>
         </thead>
         <tbody id="tableCategoryInfoBody">
-            <tr ng-repeat="cat in categories">
+            <tr ng-repeat="cat in categories | orderBy:orden:condicion">
                 <td>{{cat.id}}</td>
                 <td>{{cat.name}}</td>
                 <td ng-click="jumpToModifyCategory(cat.id, cat.name)"><a class="hoverable">Modificar categoría</a></td>

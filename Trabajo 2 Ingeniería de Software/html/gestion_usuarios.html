@@ -2,16 +2,16 @@
     <button type="button" ng-click="jumpToCreateUser()" >Crear Usuario</button>
     <table id="tableUserInfo">
         <thead>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Email</th>
+            <th ng-click="ordenar('id')">ID</th>
+            <th ng-click="ordenar('name')">Nombre</th>
+            <th ng-click="ordenar('email')">Email</th>
             <th>Password</th>
             <th>Rol</th>
             <th>Modificar</th>
             <th>Eliminar</th>
         </thead>
         <tbody id="tableUserInfoBody">
-            <tr ng-repeat="user in users">
+            <tr ng-repeat="user in users | orderBy:orden:condicion">
                 <td>{{user.id}}</td>
                 <td>{{user.name}}</td>
                 <td>{{user.email}}</td>
