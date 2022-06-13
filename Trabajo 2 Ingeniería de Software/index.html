@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html >
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        <link rel="stylesheet" href="CSS/style.css">
+        <link rel="shortcut icon" href="img/icon.ico" />
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-route.js"></script>
+        <script src="controller.js"></script>
+        <title> Catalogo de Peliculas </title>
+    </head>
+
+    <body id="body" ng-app="trabajo">
+        <!-- Div para la imagen del fondo -->
+        <div id="background"></div>
+
+        <!-- Div para las opciones básicas de volver a Inicio, y cerrar sesión -->
+        <div id="header" ng-controller="headerController">
+            <a ng-href="{{urlInicio}}" ng-click="inicio()" id="inicioButton">Inicio</a>
+            <a ng-click="logout()" id="cerrarSesion">Cerrar Sesión</a>
+
+            <!-- Menú general de navegación de Admin-->
+            <div id="adminOpciones" ng-show="role === 'ADMIN'">
+                <a href="#/admin/userManagement/" id="adminHeaderUser" ng-class="{'toggle' : page === 1}">Usuarios</a>
+                <a href="#/admin/categoryManagement/" id="adminHeaderCategory" ng-class="{'toggle' : page === 2}">Categorías</a>
+                <a href="#/admin/videoManagement/" id="adminHeaderVideo" ng-class="{'toggle' : page === 3}">Videos</a>
+            </div>
+        </div>
+
+        <!-- Div para el contenido de la página -->
+        <div id="content" ng-view>
+        </div>
+
+        <footer class="footer">
+            <p>Grupo 10 - Laboratorio de Ingeniería de Software</p>
+            <p>Trabajo hecho por Fº Javier Sarabia Andreo, Vicente Gálvez Martínez y Raúl Mateo Parrado</p>
+        </footer>
+    </body>
+</html>
