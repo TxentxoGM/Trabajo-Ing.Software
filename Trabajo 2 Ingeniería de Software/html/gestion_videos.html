@@ -3,21 +3,21 @@
     <table id="tableVideoInfo" class="table-hover">
         <thead>
             <th>Portada</th>
-            <th ng-click="ordenar('name')">Nombre</th>
-            <th ng-click="ordenar('id_category')">Categoría</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
             <th>URL</th>
-            <th ng-click="ordenar('id')">Id</th>
+            <th>Id</th>
             <th>Modificar</th>
             <th>Eliminar</th>
         </thead>
         <tbody id="tableVideoInfoBody">
-            <tr ng-repeat="vid in videos | orderBy:orden:condicion">
+            <tr ng-repeat="vid in videos">
                 <td><a href="{{vid.url}}" target="_blank"><img ng-src="{{thumbnail(vid.url)}}"></a></td>
                 <td><a href={{vid.url}} target="_blank" class="youtubeVideo">{{vid.name}}</a></td>
-                <td>{{vid.id_category}}</td>
+                <td>{{vid.name_category}}</td>
                 <td><a href={{vid.url}} target="_blank" class="youtubeVideo">{{vid.url}}</a></td>
                 <td>{{vid.id}}</td>
-                <td ng-click="jumpToModifyVideo(vid.id, vid.name, vid.url, vid.id_category)"><a class="hoverable">Modificar video</a></td>
+                <td ng-click="jumpToModifyVideo(vid.id, vid.name, vid.url, vid.name_category)"><a class="hoverable">Modificar video</a></td>
                 <td ng-click="jumpToDeleteVideo(vid.id, vid.name)"><a class="hoverable">Eliminar video</a></td> 
             </tr>
         </tbody>
