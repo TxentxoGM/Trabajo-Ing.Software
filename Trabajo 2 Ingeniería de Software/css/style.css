@@ -196,8 +196,9 @@ input {
 table {
    margin: auto;
    padding-bottom: 90px;
-   max-width: 80%;
-   min-width: 60%;
+   /* max-width: 80%;
+   min-width: 60%; */
+   max-width: 60vw;
    background-color: var(--fondoTabla);
    text-align: center;
 }
@@ -262,3 +263,12 @@ a.toggle  {
 .botonCategoria{
    width: 20vw;
 }
+
+#panelCategoriaVideos{
+   width: 66vw;
+   background-image: linear-gradient(144deg, #428d93, var(--verde) 50%, #00aceb);
+   margin: 0 auto;
+   border-radius: 10px;
+}
+
+
