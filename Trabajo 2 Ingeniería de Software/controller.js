@@ -125,18 +125,7 @@ angular.module('trabajo', ['ngRoute'])
     })
 
     // Controlador asociado a la vista del usuario sin privilegios
-    .controller('UserOptController', function ($scope, $http, $location, $filter) {
-
-        // Ordenar vídeos según su nombre
-        $scope.condicion = true;  
-        $scope.ordenar = function(propiedad) {
-            $scope.orden = propiedad;
-            
-            $scope.condicion =  $scope.condicion === true ? false : true;
-           
-        };
-
-
+    .controller('UserOptController', function ($scope, $http, $location) {
 
         // Al cargar la vista, se muestran las primeras 99 categorias de la base de datos
         $scope.$on('$routeChangeSuccess', function () {
@@ -204,29 +193,11 @@ angular.module('trabajo', ['ngRoute'])
         // Función utilizada para volver a la selección de categorías
         $scope.comeBack = function () {
             $scope.userOption = 1;
-
-            // Poner a defecto la ordenación.
-            $scope.orden = '';
-            $scope.condicion = true; 
         }
     })
 
     // Controlador asociado a la vista de gestión de usuarios
     .controller('userManagementController', function ($scope, $http) {
-
-        // Ordenar usuarios según nombre, id y correo
-        $scope.condicion = true;  
-        $scope.ordenar = function(propiedad) {
-            
-            if($scope.orden === propiedad)  $scope.condicion =  $scope.condicion === true ? false : true;
-            else{
-                $scope.orden = propiedad;
-                $scope.condicion = true;
-            } 
-
-        };
-
-
 
         // Función que, al iniciar el controlador, obtenga los primeros 99 usuarios de la base de datos
         $scope.getUsers = function () {
@@ -350,33 +321,13 @@ angular.module('trabajo', ['ngRoute'])
 
         // Función utilizada para volver a pedir la lista de usuarios para que al volver a mostrar esta, esté actualizada.
         $scope.comeBack = function () {
-            // Poner a defecto la ordenación.
-            $scope.orden = '';
-            $scope.condicion = true; 
-
-
             $scope.getUsers();
             $scope.tipoOperacion = 0;
-
-
         }
     })
 
     // Controlador asociado a la vista de gestión de categorías
     .controller('categoryManagementController', function ($scope, $http, $window) {
-
-        // Ordenar usuarios según nombre, id y correo
-        $scope.condicion = true;  
-        $scope.ordenar = function(propiedad) {
-                    
-            if($scope.orden === propiedad)  $scope.condicion =  $scope.condicion === true ? false : true;
-            else{
-                $scope.orden = propiedad;
-                $scope.condicion = true;
-            } 
-        
-        };
-
 
         // Al cargar la vista, se hace una petición al servidor para obtener las primeras 99 categorías de la base de datos
         $scope.getCategories = function () {
@@ -516,11 +467,6 @@ angular.module('trabajo', ['ngRoute'])
 
         // Función utilizada para volver a pedir la lista de categorías para que al volver a mostrar esta, esté actualizada.
         $scope.comeBack = function () {
-            // Poner a defecto la ordenación.
-            $scope.orden = '';
-            $scope.condicion = true; 
-
-
             $scope.getCategories();
             $scope.tipoOperacion = 0;
         }
@@ -528,18 +474,7 @@ angular.module('trabajo', ['ngRoute'])
 
     // Controlador asociado a la vista de gestión de videos
     .controller('videoManagementController', function ($scope, $http) {
-    
-        // Ordenar usuarios según nombre, id y correo
-        $scope.condicion = true;  
-        $scope.ordenar = function(propiedad) {
-                    
-            if($scope.orden === propiedad)  $scope.condicion =  $scope.condicion === true ? false : true;
-            else{
-                $scope.orden = propiedad;
-                $scope.condicion = true;
-            } 
-        
-        };
+
 
         // Al cargar la vista, se hace una petición al servidor para obtener los primeros 99 videos de la base de datos
         $scope.getVideos = function () {
@@ -573,16 +508,18 @@ angular.module('trabajo', ['ngRoute'])
                                 } else {
                                     $scope.error = "";
                                     let lista_provisional = data2.videos;
+                                    console.log(lista_provisional)
 
                                     // Como la categoría asociada al video va por id, se sustituye este por el nombre de categoría correspondiente
                                     lista_provisional.forEach(video => {
                                         lista_categorias.forEach(categoria => {
                                             if (video.id_category === categoria.id) {
-                                                video.id_category = categoria.name;
+                                                video.name_category = categoria.name;
                                             }
                                         });
                                     });
                                     $scope.videos = lista_provisional;
+                                    console.log($scope.videos)
                                     $scope.tipoOperacion = 0;
                                 }
                             });
@@ -631,7 +568,7 @@ angular.module('trabajo', ['ngRoute'])
         }
 
         // Al pulsar en el botón, se modifica la vista para mostrar el formulario de modificación de video, con sus valores actuales
-        $scope.jumpToModifyVideo = function (id, nombre, url, categoria) {
+        $scope.jumpToModifyVideo = function (id, nombre, url, name_category) {
             $http.get("/categories", {
                 'params': {
                     "desde": 0,
@@ -652,7 +589,7 @@ angular.module('trabajo', ['ngRoute'])
                         $scope.idVideo = id;
                         $scope.nombreVideo = nombre;
                         $scope.urlVideo = url;
-                        $scope.categoriaVideo = categoria;
+                        $scope.categoriaVideo = name_category;
                         $scope.tipoOperacion = 2;
                     }
                 });
@@ -694,6 +631,8 @@ angular.module('trabajo', ['ngRoute'])
 
         // Petición al servidor para modificar el video con los valores introducidos
         $scope.modifyVideo = function () {
+            
+
             if ($scope.categoriaVideo != "" && $scope.nombreVideo != "" && $scope.urlVideo != "") {
                 $http.put('/videos/' + $scope.idVideo,
                     {
@@ -745,11 +684,6 @@ angular.module('trabajo', ['ngRoute'])
 
         // Función utilizada para volver a pedir la lista de videos para que al volver a mostrar esta, esté actualizada.
         $scope.comeBack = function () {
-            // Poner a defecto la ordenación.
-            $scope.orden = '';
-            $scope.condicion = true; 
-
-
             $scope.getVideos();
             $scope.tipoOperacion = 0;
         }
