@@ -1,0 +1,81 @@
+<div id="getVideoInfo" ng-show="tipoOperacion === 0">
+    <button type="button" ng-click="jumpToCreateVideo()">Añadir Video</button>
+    <table id="tableVideoInfo" class="table-hover">
+        <thead>
+            <th>Portada</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>URL</th>
+            <th>Id</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
+        </thead>
+        <tbody id="tableVideoInfoBody">
+            <tr ng-repeat="vid in videos">
+                <td><a href="{{vid.url}}" target="_blank"><img ng-src="{{thumbnail(vid.url)}}"></a></td>
+                <td><a href={{vid.url}} target="_blank" class="youtubeVideo">{{vid.name}}</a></td>
+                <td>{{vid.id_category}}</td>
+                <td><a href={{vid.url}} target="_blank" class="youtubeVideo">{{vid.url}}</a></td>
+                <td>{{vid.id}}</td>
+                <td ng-click="jumpToModifyVideo(vid.id, vid.name, vid.url, vid.id_category)"><a class="hoverable">Modificar video</a></td>
+                <td ng-click="jumpToDeleteVideo(vid.id, vid.name)"><a class="hoverable">Eliminar video</a></td> 
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<div id="createVideoMenu" ng-show="tipoOperacion === 1">
+    <form>
+        <label for="createVideoMenu_Nombre">Nombre:</label>
+        <input type="text" name="createVideoMenu_Nombre" id="createVideoMenu_Nombre"placeholder="Nombre" ng-model="nombreVideo"><br>
+
+        <label for="createVideoMenu_URL">URL:</label>
+        <input type="text" name="createVideoMenu_URL" id="createVideoMenu_URL" placeholder="URL"  ng-model="urlVideo"><br>
+
+        <label for="createVideoMenu_Categoria">Categoría:</label>
+        <select id="createVideoMenu_Categoria" name="createVideoMenu_Categoria" ng-model="categoriaVideo">
+            <option ng-repeat="category in categoriasCreacionVideos" ng-value="category.id">{{category.name}}</option>
+        </select>
+
+        <div class="button1">
+            <button type="button"
+                ng-click="createVideo()">Añadir</button>
+            <button type="button" ng-click="comeBack()">Volver Atrás</button>
+        </div>
+    </form>
+    <p>{{error}}</p>
+</div>
+
+<div id="updateVideoMenu" ng-show="tipoOperacion === 2">
+    <form>
+        <label for="updateVideoMenu_Nombre">Nombre:</label>
+        <input type="text" name="updateVideoMenu_Nombre" id="updateVideoMenu_Nombre" placeholder="Nombre" ng-value="nombreVideo" ng-model="nombreVideo"><br>
+
+        <label for="updateVideoMenu_URL">URL:</label>
+        <input type="text" name="updateVideoMenu_URL" id="updateVideoMenu_URL" placeholder="URL" ng-value="urlVideo" ng-model="urlVideo"><br>
+
+        <label for="updateVideoMenu_Categoria">Categoría:</label>
+        <select id="updateVideoMenu_Categoria" name="updateVideoMenu_Categoria" ng-model="categoriaVideo">
+            <option ng-repeat="category in categoriasModificacionVideos" ng-value="category.id">{{category.name}}</option>
+        </select><br>
+
+        <div class="button1">
+            <button type="button" ng-click="modifyVideo()">Actualizar</button>
+            <button type="button" ng-click="comeBack()">Volver Atrás</button>
+        </div>
+    </form>
+    <p>{{error}}</p>
+</div>
+
+<div id="deleteVideoMenu" ng-show="tipoOperacion === 3">
+    <form>
+        <p>¿Seguro que quieres eliminar el video de nombre <span class="borrarElemento">{{nombreVideo}}</span> e identificador <span class="borrarElemento">{{idVideo}}</span> ? <br>
+        <div class="button1">
+            <button type="button" ng-click="deleteVideo(idVideo)">Eliminar</button>
+            <button type="button" ng-click="comeBack()">Volver Atrás</button>
+        </div>
+    </form>
+    <p>{{error}}</p>
+</div>
