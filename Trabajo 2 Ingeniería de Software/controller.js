@@ -67,7 +67,7 @@ angular.module('trabajo', ['ngRoute'])
         $routeProvider.
             when('/', {
                 controller: 'LoginController',
-                templateUrl: 'login.html'
+                templateUrl: 'html/login.html'
             }).
             when('/admin/', {
                 controller: 'headerController'
@@ -135,10 +135,6 @@ angular.module('trabajo', ['ngRoute'])
             $scope.condicion =  $scope.condicion === true ? false : true;
            
         };
-
-
-
-
 
         // Al cargar la vista, se muestran las primeras 99 categorias de la base de datos
         $scope.$on('$routeChangeSuccess', function () {
@@ -372,6 +368,7 @@ angular.module('trabajo', ['ngRoute'])
 
         // Función utilizada para volver a pedir la lista de usuarios para que al volver a mostrar esta, esté actualizada.
         $scope.comeBack = function () {
+            $scope.error = "";
             $scope.getUsers();
             $scope.tipoOperacion = 0;
         }
@@ -530,6 +527,7 @@ angular.module('trabajo', ['ngRoute'])
 
         // Función utilizada para volver a pedir la lista de categorías para que al volver a mostrar esta, esté actualizada.
         $scope.comeBack = function () {
+            $scope.error = "";
             $scope.getCategories();
             $scope.tipoOperacion = 0;
         }
@@ -756,6 +754,7 @@ angular.module('trabajo', ['ngRoute'])
 
         // Función utilizada para volver a pedir la lista de videos para que al volver a mostrar esta, esté actualizada.
         $scope.comeBack = function () {
+            $scope.error = "";
             $scope.getVideos();
             $scope.tipoOperacion = 0;
         }
